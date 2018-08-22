@@ -1,9 +1,9 @@
 ﻿namespace Blackjack
 {
     /// <summary>
-    /// Card struct
-    /// Using a struct to reduce heap memory usage for cards
-    /// Makes Card a value type vs reference type
+    /// Card Class
+    /// Was using a struct to reduce heap memory usage for cards
+    /// But cannot reassign the value of aces then
     /// </summary>
     public class Card
     {
