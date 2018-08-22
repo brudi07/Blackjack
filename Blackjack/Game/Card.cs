@@ -3,7 +3,7 @@
     /// <summary>
     /// Card Class
     /// Was using a struct to reduce heap memory usage for cards
-    /// But cannot reassign the value of aces then
+    /// But cannot reassign the value of aces then because of how Stack works
     /// </summary>
     public class Card
     {
@@ -32,8 +32,8 @@
             Spades
         };
 
-        public CardType Type { get; set; }
-        public SuitType Suit { get; set; }
+        public CardType Type { get; }
+        public SuitType Suit { get; }
         public int Value { get; set; }
 
         /// <summary>

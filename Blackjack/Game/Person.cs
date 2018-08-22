@@ -11,6 +11,7 @@ namespace Blackjack
     {
         public string Name { get; set; }
         public List<Card> Hand { get; set; }
+        public bool Lost { get; set; }
 
         /// <summary>
         /// Person constructor
@@ -20,6 +21,7 @@ namespace Blackjack
         {
             Name = name;
             Hand = new List<Card>();
+            Lost = false;
         }
 
         /// <summary>
@@ -60,11 +62,28 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Write to console that the person busted
+        /// Check if person has busted but has an ace
+        /// </summary>
+        public void CheckForAce()
+        {
+            // Check if person busted but has an ace
+            if (SumHand() > 21)
+                foreach (Card card in Hand)
+                    if (card.Type == Card.CardType.Ace && card.Value != 1)
+                    {
+                        card.Value = 1;
+                        Console.WriteLine($"{Name} swapped {card} value to 1");
+                        Console.WriteLine($"{Name}'s new total {SumHand()}");
+                    }
+        }
+
+        /// <summary>
+        /// Bust!
         /// </summary>
         public void Bust()
         {
             Console.WriteLine($"{Name} bust!");
+            Lost = true;
         }
 
         /// <summary>

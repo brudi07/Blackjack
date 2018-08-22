@@ -6,6 +6,11 @@ namespace Blackjack
     internal class Play
     {
 
+        // Create a delegate to write messages
+        private delegate void Delegate(string message);
+        // Use lambda expression to create an anonymous function to instantiate Message
+        private static readonly Delegate Message = (m => Console.WriteLine((m)));
+
         public static void PlayGame()
         {
             // Instantiate using optional argument constructor
@@ -25,8 +30,8 @@ namespace Blackjack
                 // Update games played and reset lost booleans
                 ConsoleKey key;
                 player.GamesPlayed++;
-                bool playerLost = false;
-                bool dealerLost = false;
+                player.Lost = false;
+                dealer.Lost = false;
 
                 // Deal initial cards
                 player.Draw(deck);
@@ -34,14 +39,14 @@ namespace Blackjack
                 player.Draw(deck);
                 dealer.Draw(deck);
 
-                Console.WriteLine(player.ToString());
-                Console.WriteLine(dealer.ToString());
+                Message(player.ToString());
+                Message(dealer.ToString());
 
                 // Allow player the choice to hit or stay
                 bool playerChoice = true;
                 while (playerChoice)
                 {
-                    Console.WriteLine("1: Hit \n2: Stay");
+                    Message("1: Hit \n2: Stay");
                     // Console.ReadKey(true) hides the key press in console
                     key = Console.ReadKey(true).Key;
                     // Player choice
@@ -50,53 +55,38 @@ namespace Blackjack
                     else if (key == ConsoleKey.D2)
                         playerChoice = false;
                     // Check if player busted but has an ace
-                    if (player.SumHand() > 21)
-                        foreach (Card card in player.Hand)
-                            if (card.Type == Card.CardType.Ace)
-                            {
-                                card.Value = 1;
-                                Console.WriteLine($"{player.Name} swapped {card} value to 1");
-                                Console.WriteLine($"{player.Name}'s new total {player.SumHand()}");
-                            }
+                    player.CheckForAce();
                     // Check if player busts, inverted to reduce nesting
                     if (player.SumHand() <= 21) continue;
                     player.Bust();
-                    playerLost = true;
                     playerChoice = false;
                 }
 
                 // Dealer draws until hand value < 17
-                if (!playerLost)
+                // No need to do this is player busts
+                if (!player.Lost)
                 {
                     while (dealer.SumHand() < 17)
                     {
                         dealer.Draw(deck);
                         // Check if dealer busted but has an ace
-                        if (dealer.SumHand() > 21)
-                            foreach (Card card in dealer.Hand)
-                                if (card.Type == Card.CardType.Ace)
-                                {
-                                    card.Value = 1;
-                                    Console.WriteLine($"Dealer swapped {card} value to 1");
-                                    Console.WriteLine($"Dealer's new total {dealer.SumHand()}");
-                                }
+                        dealer.CheckForAce();
                         // Check if dealer busts
                         if (dealer.SumHand() <= 21) continue;
                         dealer.Bust();
-                        dealerLost = true;
                     }
                 }
 
-                Console.WriteLine(player.ToString());
-                Console.WriteLine(dealer.ToString());
+                Message(player.ToString());
+                Message(dealer.ToString());
 
                 // Win/Lose Conditions
-                if (playerLost)
+                if (player.Lost)
                     dealer.Winner();
-                else if (dealerLost)
+                else if (dealer.Lost)
                     player.Winner();
                 else if (player.SumHand() == dealer.SumHand())
-                    Console.WriteLine("Tie.");
+                    Message("Tie.");
                 else if (player.SumHand() > dealer.SumHand())
                     player.Winner();
                 else
@@ -111,7 +101,7 @@ namespace Blackjack
                 dealer.Hand = new List<Card>();
 
                 // Play again or exit
-                Console.WriteLine("Press any key to play again or press 0 to exit. \n");
+                Message("Press any key to play again or press 0 to exit. \n");
                 key = Console.ReadKey(true).Key;
                 Console.Clear();
                 if (key == ConsoleKey.D0)

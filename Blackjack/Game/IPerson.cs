@@ -10,6 +10,7 @@ namespace Blackjack
         // Properties
         string Name { get; set; }
         List<Card> Hand { get; set; }
+        bool Lost { get; set; }
 
         // Methods
         Card Draw(Deck deck);

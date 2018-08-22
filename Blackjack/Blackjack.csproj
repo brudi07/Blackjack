@@ -43,13 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Card.cs" />
-    <Compile Include="Dealer.cs" />
-    <Compile Include="Deck.cs" />
-    <Compile Include="IPerson.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="Play.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Game\Card.cs" />
+    <Compile Include="Game\Dealer.cs" />
+    <Compile Include="Game\Deck.cs" />
+    <Compile Include="Game\IPerson.cs" />
+    <Compile Include="Game\Person.cs" />
+    <Compile Include="Game\Play.cs" />
+    <Compile Include="Game\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
